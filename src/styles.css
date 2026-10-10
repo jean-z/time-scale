@@ -1,0 +1,113 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #01040a;
+  color: #d7ecf7;
+  font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+#bg { position: fixed; inset: 0; z-index: 0; background: #0a0604; }
+
+/* ---------- 固定时钟 HUD ---------- */
+#clock-hud {
+  position: fixed; top: 16px; right: 16px; z-index: 10;
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 14px; border-radius: 999px;
+  background: rgba(2, 12, 24, .6);
+  border: 1px solid rgba(140, 220, 255, .18);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  font-variant-numeric: tabular-nums;
+  opacity: 0; pointer-events: none;
+  transition: opacity .5s;
+}
+#clock-hud.show { opacity: 1; }
+#clock-hud .k { font-size: 10px; letter-spacing: .2em; color: rgba(160,205,226,.6); }
+#clock { font-size: 17px; font-weight: 800; color: #ffd27a; text-shadow: 0 0 14px rgba(255,210,122,.4); }
+#clock-bar {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 11;
+  background: rgba(140, 220, 255, .1);
+}
+#clock-fill {
+  height: 100%; width: 0;
+  background: linear-gradient(90deg, #f2a048, #ffd27a, #9fdcff);
+  box-shadow: 0 0 12px rgba(255, 210, 122, .6);
+}
+
+/* ---------- 开场 ---------- */
+#intro {
+  position: relative; z-index: 1;
+  height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 0 24px;
+}
+.eyebrow { font-size: 11px; letter-spacing: .5em; text-indent: .5em; color: rgba(159,220,255,.6); margin-bottom: 18px; }
+#intro h1 {
+  font-size: clamp(32px, 7vw, 58px); font-weight: 900; line-height: 1.4; letter-spacing: .06em;
+  color: #f2fbff; text-shadow: 0 0 40px rgba(140,220,255,.4);
+}
+#intro .sub { margin-top: 26px; font-size: 15px; line-height: 2.1; color: rgba(215,236,247,.8); max-width: 520px; }
+#intro .sub b { color: #ffd27a; }
+.hint { margin-top: 54px; font-size: 12px; letter-spacing: .3em; color: rgba(159,220,255,.7); animation: bob 2.4s ease-in-out infinite; }
+@keyframes bob { 0%,100% { transform: translateY(0); opacity: .7; } 50% { transform: translateY(10px); opacity: 1; } }
+
+/* ---------- 时间线 ---------- */
+#timeline { position: relative; z-index: 1; padding: 0 20px 20vh; max-width: 720px; margin: 0 auto; }
+.rail {
+  position: absolute; top: 0; bottom: 0; left: 34px; width: 2px;
+  background: linear-gradient(180deg, rgba(159,220,255,.4), rgba(159,220,255,.08));
+}
+.event { position: relative; padding-left: 76px; opacity: 0; transform: translateY(26px); transition: opacity .8s, transform .8s; }
+.event.visible { opacity: 1; transform: none; }
+.dot {
+  position: absolute; left: 28px; top: 14px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: #ffd27a;
+  box-shadow: 0 0 0 5px rgba(255,210,122,.15), 0 0 18px rgba(255,210,122,.7);
+}
+.card { }
+.clock-tag {
+  display: inline-block; font-size: 13px; font-weight: 800; letter-spacing: .08em;
+  color: #ffd27a; font-variant-numeric: tabular-nums;
+  border: 1px solid rgba(255,210,122,.35); border-radius: 8px;
+  padding: 3px 10px; margin-bottom: 10px;
+}
+.era { font-size: 11px; letter-spacing: .3em; color: rgba(159,220,255,.6); margin-bottom: 6px; }
+.card h2 { font-size: clamp(20px, 4vw, 27px); font-weight: 900; color: #eaf7ff; margin-bottom: 12px; letter-spacing: .03em; }
+.card p { font-size: 14px; line-height: 2; color: rgba(215,236,247,.78); max-width: 560px; }
+
+/* ---------- 结尾 ---------- */
+#finale {
+  position: relative; z-index: 1;
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 20vh 24px 10vh;
+}
+#finale h1 { font-size: clamp(24px, 5vw, 40px); font-weight: 900; line-height: 1.7; color: #f2fbff; }
+#finale .big {
+  margin: 26px 0 8px;
+  font-size: clamp(20px, 4.5vw, 34px); font-weight: 800; color: #ffd27a;
+  text-shadow: 0 0 30px rgba(255,210,122,.4);
+}
+.life-box {
+  margin: 30px 0; padding: 22px 28px; border-radius: 16px;
+  background: rgba(2,12,24,.55); border: 1px solid rgba(140,220,255,.16);
+  max-width: 480px;
+}
+.life-box p { font-size: 13.5px; line-height: 2; color: rgba(215,236,247,.8); }
+.life-sec { font-size: 17px !important; font-weight: 800; color: #9fdcff; margin-top: 8px; }
+#finale .dim { font-size: 13px; line-height: 2.1; color: rgba(160,205,226,.55); max-width: 460px; margin-bottom: 34px; }
+.btn {
+  cursor: pointer; font: inherit; font-size: 13px; letter-spacing: .2em;
+  color: #bfeaff; background: rgba(159,220,255,.08);
+  border: 1px solid rgba(159,220,255,.35); border-radius: 999px;
+  padding: 12px 34px; transition: background .3s;
+}
+.btn:hover { background: rgba(159,220,255,.18); }
+
+footer {
+  position: relative; z-index: 1;
+  text-align: center; padding: 26px 16px 40px;
+  font-size: 10.5px; color: rgba(160,205,226,.35); line-height: 1.8;
+}
